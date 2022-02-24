@@ -23,11 +23,12 @@ L.TileLayer.Bing = L.TileLayer.extend({
   },
 
   statics: {
-    METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={bingMapsKey}&include=ImageryProviders&uriScheme=https',
-    POINT_METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={bingMapsKey}&uriScheme=https'
+    METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={bingMapsKey}&include=ImageryProviders&uriScheme=https&c={culture}',
+    POINT_METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={bingMapsKey}&uriScheme=https&c={culture}'
   },
 
-  VALID_IMAGERY_SETS: ['Aerial', 'AerialWithLabels', 'Road'],
+  // https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata
+  VALID_IMAGERY_SETS: ['Aerial', 'AerialWithLabels', 'Road','RoadOnDemand', 'Streetside', 'AerialWithLabelsOnDemand', 'Birdseye', 'BirdseyeWithLabels', 'BirdseyeV2', 'BirdseyeV2WithLabels', 'CanvasDark', 'CanvasLight', 'CanvasGray'],
 
   initialize: function (options) {
     if (typeof options === 'string') {
@@ -149,6 +150,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     var PointMetaDataUrl = L.Util.template(L.TileLayer.Bing.POINT_METADATA_URL, {
       bingMapsKey: this.options.bingMapsKey,
       imagerySet: this.options.imagerySet,
+      culture: this.options.culture,
       z: zoom,
       lat: latlng.lat,
       lng: latlng.lng
@@ -234,7 +236,8 @@ L.TileLayer.Bing = L.TileLayer.extend({
 
     var metadataUrl = L.Util.template(L.TileLayer.Bing.METADATA_URL, {
       bingMapsKey: this.options.bingMapsKey,
-      imagerySet: this.options.imagerySet
+      imagerySet: this.options.imagerySet,
+      culture: this.options.culture
     });
 
     return fetch(metadataUrl)
