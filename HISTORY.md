@@ -1,3 +1,8 @@
+v1.0.3
+==================
+* Add more supported imageries
+* Support culture parameter
+
 v1.0.2
 ==================
 * Fix bug that keeps dead attributions around when dynamically switching between
